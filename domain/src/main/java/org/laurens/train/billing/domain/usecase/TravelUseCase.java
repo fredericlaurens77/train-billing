@@ -6,15 +6,24 @@ import org.laurens.train.billing.domain.journey.Tap;
 import org.laurens.train.billing.domain.user.User;
 import org.laurens.train.billing.domain.user.UserInTransit;
 import org.laurens.train.billing.domain.user.UserNotInTransit;
+import org.laurens.train.billing.domain.user.UserRepository;
 
-public class Travel {
-    public User tapCard(User user, Tap tap){
+public class TravelUseCase {
+
+    private final UserRepository userRepository;
+
+    public TravelUseCase(UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
+
+    public User tapCard(Tap tap){
+        User user = userRepository.findOrCreateUser(tap.userId());
         switch (user) {
             case UserNotInTransit userNotInTransit -> {
-                return new JourneyStarted(userNotInTransit, tap).apply();
+                return new JourneyStarted(userNotInTransit, tap).apply(userRepository);
             }
             case UserInTransit userInTransit -> {
-                return new JourneyCompleted(userInTransit, tap).apply();
+                return new JourneyCompleted(userInTransit, tap).apply(userRepository);
             }
         }
     }

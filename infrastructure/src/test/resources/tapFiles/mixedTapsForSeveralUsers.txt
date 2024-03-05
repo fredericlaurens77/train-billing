@@ -1,0 +1,19 @@
+{
+  "taps" : [{
+    "unixTimestamp" : 3,
+    "customerId" : 3,
+    "station" : "H"
+  }, {
+    "unixTimestamp" : 3,
+    "customerId" : 2,
+    "station" : "H"
+  }, {
+    "unixTimestamp" : 10,
+    "customerId" : 2,
+    "station" : "G"
+  }, {
+    "unixTimestamp" : 27,
+    "customerId" : 3,
+    "station" : "E"
+  }]
+}

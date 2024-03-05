@@ -18,4 +18,8 @@ public enum Zone {
     public int isCloserToCityCenter(Zone otherZone){
         return this.zoneOrder - otherZone.zoneOrder;
     }
+
+    public int number(){
+        return this.zoneOrder;
+    }
 }

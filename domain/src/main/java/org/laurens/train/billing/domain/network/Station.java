@@ -29,23 +29,13 @@ public enum Station{
         return this.zones.stream().max(Zone::isCloserToCityCenter).orElse(zones.stream().iterator().next());
     }
 
-    public Set<Zone> smallestZoneIntervalWith(Station otherStation){
+    public ZoneInterval smallestZoneIntervalWith(Station otherStation){
         List<ZoneInterval> intervals = List.of(
-                new ZoneInterval(otherStation.minZone(), this.minZone()),
-                new ZoneInterval(otherStation.maxZone(), this.maxZone()),
-                new ZoneInterval(otherStation.minZone(), this.maxZone()),
-                new ZoneInterval(otherStation.maxZone(), this.minZone()));
+                new ZoneInterval(this.minZone(), otherStation.minZone()),
+                new ZoneInterval(this.maxZone(), otherStation.maxZone()),
+                new ZoneInterval(this.maxZone(), otherStation.minZone()),
+                new ZoneInterval(this.minZone(), otherStation.maxZone()));
 
-        ZoneInterval smallestInterval = intervals.stream().min(Comparator.comparing(ZoneInterval::size)).orElse(intervals.getFirst());
-
-        return buildZoneSet(smallestInterval.zoneA(), smallestInterval.zoneB());
-    }
-
-    private Set<Zone> buildZoneSet(Zone zoneA, Zone zoneB){
-        if(zoneA != zoneB) {
-            return Set.of(zoneA, zoneB);
-        } else {
-            return Set.of(zoneA);
-        }
+        return intervals.stream().min(Comparator.comparing(ZoneInterval::size)).orElse(intervals.getFirst());
     }
 }

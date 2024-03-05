@@ -4,7 +4,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,12 +41,12 @@ class StationTest {
 
     public static Stream<Arguments> should_give_smallest_zone_interval_between_stations() {
         return Stream.of(
-                Arguments.of(Station.A, Station.B, Set.of(Zone.ZONE_1)),
-                Arguments.of(Station.A, Station.C, Set.of(Zone.ZONE_1, Zone.ZONE_2)),
-                Arguments.of(Station.A, Station.F, Set.of(Zone.ZONE_1, Zone.ZONE_3)),
-                Arguments.of(Station.E, Station.F, Set.of(Zone.ZONE_3)),
-                Arguments.of(Station.E, Station.G, Set.of(Zone.ZONE_3, Zone.ZONE_4)),
-                Arguments.of(Station.F, Station.G, Set.of(Zone.ZONE_4))
+                Arguments.of(Station.A, Station.B, new ZoneInterval(Zone.ZONE_1)),
+                Arguments.of(Station.A, Station.C, new ZoneInterval(Zone.ZONE_1, Zone.ZONE_2)),
+                Arguments.of(Station.A, Station.F, new ZoneInterval(Zone.ZONE_1, Zone.ZONE_3)),
+                Arguments.of(Station.E, Station.F, new ZoneInterval(Zone.ZONE_3)),
+                Arguments.of(Station.E, Station.G, new ZoneInterval(Zone.ZONE_3, Zone.ZONE_4)),
+                Arguments.of(Station.F, Station.G,new ZoneInterval(Zone.ZONE_4))
         );
     }
 
@@ -64,7 +63,7 @@ class StationTest {
 
     @ParameterizedTest
     @MethodSource
-    void should_give_smallest_zone_interval_between_stations(Station stationA, Station stationB, Set<Zone> zones){
-        assertThat(stationA.smallestZoneIntervalWith(stationB)).isEqualTo(zones);
+    void should_give_smallest_zone_interval_between_stations(Station stationA, Station stationB, ZoneInterval zoneInterval){
+        assertThat(stationA.smallestZoneIntervalWith(stationB)).isEqualTo(zoneInterval);
     }
 }
