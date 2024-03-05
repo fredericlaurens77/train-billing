@@ -13,6 +13,7 @@ import org.laurens.train.billing.domain.user.UserNotInTransit;
 import java.time.LocalTime;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.laurens.train.billing.domain.user.User.NO_JOURNEY;
 
 class TravelTest {
@@ -31,10 +32,10 @@ class TravelTest {
         Tap tap = new Tap(userId, Station.A, new TapTime(LocalTime.now()));
         User updatedUser = travel.tapCard(user, tap);
         //Then
-        assert(updatedUser.userId()).equals(userId);
-        assert(updatedUser.journeys()).isEmpty();
-        assert(updatedUser.getClass()).equals(UserInTransit.class);
-        assert(((UserInTransit) updatedUser).startingTap()).equals(tap);
+        assertThat(updatedUser.userId()).isEqualTo(userId);
+        assertThat(updatedUser.journeys()).isEmpty();
+        assertThat(updatedUser.getClass()).isEqualTo(UserInTransit.class);
+        assertThat(((UserInTransit) updatedUser).startingTap()).isEqualTo(tap);
     }
 
     @Test
@@ -46,11 +47,10 @@ class TravelTest {
         Tap tap = new Tap(userId, Station.A, new TapTime(LocalTime.now()));
         User updatedUser = travel.tapCard(user, tap);
         //Then
-        assert(updatedUser.userId()).equals(userId);
-        assert(updatedUser.journeys()).size() == 1;
-        assert(updatedUser.journeys()).contains(previousJourney);
-        assert(updatedUser.getClass()).equals(UserInTransit.class);
-        assert(((UserInTransit) updatedUser).startingTap()).equals(tap);
+        assertThat(updatedUser.userId()).isEqualTo(userId);
+        assertThat(updatedUser.journeys()).containsExactly(previousJourney);
+        assertThat(updatedUser.getClass()).isEqualTo(UserInTransit.class);
+        assertThat(((UserInTransit) updatedUser).startingTap()).isEqualTo(tap);
     }
 
     @Test
@@ -63,10 +63,9 @@ class TravelTest {
         Tap tap = new Tap(userId, Station.B, new TapTime(LocalTime.now()));
         User updatedUser = travel.tapCard(user, tap);
         //Then
-        assert(updatedUser.userId()).equals(userId);
-        assert(updatedUser.journeys()).size() == 1;
-        assert(updatedUser.journeys()).contains(new Journey(startingTap, tap));
-        assert(updatedUser.getClass()).equals(UserNotInTransit.class);
+        assertThat(updatedUser.userId()).isEqualTo(userId);
+        assertThat(updatedUser.journeys()).containsExactly(new Journey(startingTap, tap));
+        assertThat(updatedUser.getClass()).isEqualTo(UserNotInTransit.class);
     }
 
     @Test
@@ -79,11 +78,9 @@ class TravelTest {
         Tap tap = new Tap(userId, Station.B, new TapTime(LocalTime.now()));
         User updatedUser = travel.tapCard(user, tap);
         //Then
-        assert(updatedUser.userId()).equals(userId);
-        assert(updatedUser.journeys()).size() == 2;
-        assert(updatedUser.journeys()).contains(previousJourney);
-        assert(updatedUser.journeys()).contains(new Journey(startingTap, tap));
-        assert(updatedUser.getClass()).equals(UserNotInTransit.class);
+        assertThat(updatedUser.userId()).isEqualTo(userId);
+        assertThat(updatedUser.journeys()).containsExactly(previousJourney, new Journey(startingTap, tap));
+        assertThat(updatedUser.getClass()).isEqualTo(UserNotInTransit.class);
     }
 
 }
